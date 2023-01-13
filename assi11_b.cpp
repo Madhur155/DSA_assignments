@@ -54,7 +54,7 @@ node *search(node *root, int data){
     return search(root->left, data);
 }
 
-
+//left subtree ka right most child 
 node *inorder_predecessor(node *root){
     root = root->left;
     while(root->right != NULL){

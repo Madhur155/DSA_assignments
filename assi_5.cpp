@@ -35,7 +35,7 @@ class ThreadedBinaryTree
   void insert(int key)
   {
     node *p = root;
-    for (;;)
+    for (;;)        //while p!=NULL
     {
       if (p->data < key) // move to right thread
       {

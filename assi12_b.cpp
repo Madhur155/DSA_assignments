@@ -53,10 +53,11 @@ int Quick:: partition(int m,int p)
             j--;
          }while(arr[j]>pivot);
 
-             if(i<j)
+             if(i<j)            //if j goes on the left side of i  
                 swap(i,j);
        }while(i<j);
-                swap(m,j);
+                swap(m,j);    //finally to keep the pivot in its sorted position 
+
        //arr[m]=arr[j];
        //arr[j]=pivot;
      return j;   

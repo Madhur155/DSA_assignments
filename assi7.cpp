@@ -1,255 +1,86 @@
-//  Write a C++ program for the implementation of BFS and DFS for a given graph.
-
-
 #include <iostream>
-#include <iomanip>
+#include <vector>
 #include <queue>
+#include <stack>
 using namespace std;
-struct node
+// add the edge in graph
+void edge(vector<int> adj[], int u, int v)
 {
-    int data;
-    node *next;
-};
-class graph
+    adj[u].push_back(v);
+}
+// function for bfs traversal
+void bfs(int s, vector<int> adj[], bool visit[])
 {
-public:
-    int m[10][10], n = 1;
-    node *h[10];
-    graph(int p)
+    queue<int> q; // queue in STL
+    q.push(s);
+    visit[s] = true;
+    while (!q.empty())
     {
-        n = p;
-        for (int i = 0; i < n; i++)
+        int u = q.front();
+        cout << u << " ";
+        q.pop();
+        // loop for traverse
+        for (int i = 0; i < adj[u].size(); i++)
         {
-            for (int j = 0; j < n; j++)
-                m[i][j] = 0;
-        }
-    }
-    void insertmat(int);
-    void displaymat();
-    void insertlist(int);
-    void addedge(int x, int y);
-    void displaylist();
-    void bfsmat()
-    {
-        queue<int> p;
-        int visited[n + 1], var, j, pre;
-        cout << "Enter starting vertex:" << endl;
-        cin >> var;
-        for (int i = 0; i <= n; i++)
-        {
-            visited[i] = 0;
-        }
-        p.push(var);
-        visited[var] = 1;
-        while (!p.empty())
-        {
-            pre = p.front();
-            cout << p.front() << " ";
-            p.pop();
-            for (j = 0; j < n; j++)
+            if (!visit[adj[u][i]])
             {
-                if (m[pre - 1][j] == 1 && visited[j + 1] != 1)
-                {
-                    p.push(j + 1);
-                    visited[j + 1] = 1;
-                }
+                q.push(adj[u][i]);
+                visit[adj[u][i]] = true;
             }
         }
     }
-    void bfslist()
+}
+// function for dfs traversal
+void dfs(int s, vector<int> adj[], bool visit[])
+{
+    stack<int> stk; // stack in STL
+    stk.push(s);
+    visit[s] = true;
+    while (!stk.empty())
     {
-        queue<int> p;
-        node *cn;
-        int visited[n + 1], var, j, pre;
-        cout << "Enter starting vartex:" << endl;
-        cin >> var;
-        for (int i = 0; i <= n; i++)
+        int u = stk.top();
+        cout << u << " ";
+        stk.pop();
+        // loop for traverse
+        for (int i = 0; i < adj[u].size(); i++)
         {
-            visited[i] = 0;
-        }
-        p.push(var);
-        visited[var] = 1;
-        while (!p.empty())
-        {
-            pre = p.front();
-            cout << p.front() << " ";
-            p.pop();
-            cn = h[pre];
-            while (cn->next != NULL)
+            if (!visit[adj[u][i]])
             {
-                cn = cn->next;
-                if (visited[cn->data] != 1)
-                {
-                    p.push(cn->data);
-                    visited[cn->data] = 1;
-                }
+                stk.push(adj[u][i]);
+                visit[adj[u][i]] = true;
             }
         }
     }
-};
-void graph::addedge(int x, int y)
-{
-    node *nn, *cn;
-    nn = new node;
-    nn->data = y;
-    nn->next = NULL;
-    if (h[x] != NULL)
-    {
-        cn = h[x];
-        while (cn->next != NULL)
-        {
-            cn = cn->next;
-        }
-        cn->next = nn;
-    }
 }
-void graph::insertmat(int pair)
-{
-    cout << "enter the " << pair << " pairs of vertices:" << endl;
-    int i, j, choice;
-    do
-    {
-
-        cin >> i >> j;
-        if (i <= n && j <= n)
-        {
-            m[i - 1][j - 1] = 1;
-            m[j - 1][i - 1] = 1;
-            pair--;
-        }
-        else
-        {
-            cout << "the pair of vertices contain a vertice beyond limit" << endl;
-        }
-    } while (pair);
-    displaymat();
-    int ch1;
-    do
-    {
-        bfsmat();
-        cout << endl
-             << "want to search for other vertex:1)yes" << endl;
-        cin >> ch1;
-    } while (ch1 == 1);
-}
-void graph::displaymat()
-{
-    cout << endl
-         << "the elements of graph in matrix form are as follow:" << endl;
-    cout << "M|";
-    for (int t = 0; t < n; t++)
-    {
-        cout << "\t" << t + 1 << "|";
-    }
-    cout << endl;
-    for (int k = 0; k < n; k++)
-    {
-        cout << k + 1 << "|";
-        for (int t = 0; t < n; t++)
-        {
-            cout << "\t" << m[k][t] << "|";
-        }
-        cout << endl;
-    }
-}
-void graph::insertlist(int pair)
-{
-    int i, j, choice;
-    for (int t = 0; t < 10; t++)
-    {
-        h[t] = new node;
-        h[t]->data = t;
-        h[t]->next = NULL;
-    }
-    cout << "enter the " << pair << " pairs of vertices:" << endl;
-    do
-    {
-        cin >> i >> j;
-        if (i <= n && j <= n && i != j)
-        {
-            addedge(i, j);
-            addedge(j, i);
-            pair--;
-        }
-        else if (i == j)
-        {
-            addedge(i, j);
-            pair--;
-        }
-        else
-        {
-            cout << "the pair of vertices contain a vertice beyond limit" << endl;
-        }
-    } while (pair);
-    displaylist();
-    int ch1;
-    do
-    {
-        bfslist();
-        cout << endl
-             << "want to search for other vertex:1)yes" << endl;
-        cin >> ch1;
-    } while (ch1 == 1);
-}
-void graph ::displaylist()
-{
-    cout << endl
-         << "the elements of graph in list form are as follow:" << endl;
-    cout << "v"
-         << "-->edges" << endl;
-    node *cn;
-    for (int i = 1; i <= n; i++)
-    {
-        cn = h[i];
-        do
-        {
-            cout << cn->data;
-            if (cn->next != NULL)
-                cout << "-->";
-            cn = cn->next;
-        } while (cn != NULL);
-        cout << endl;
-    }
-}
+// main function
 int main()
 {
-    int i = 0, choice, v, pair;
-    while (1)
+    vector<int> adj[5]; // vector of array to store the graph
+    bool visit[5];      // array to check visit or not of a node
+    // initially all node are unvisited
+    for (int i = 0; i < 5; i++)
     {
-        cout << endl
-             << "enter the number of vertex:" << endl;
-        cin >> v;
-        graph p(v);
-        cout << "enter number of pairs:" << endl;
-        cin >> pair;
-        cout << endl
-             << "1)insert in matrix" << endl
-             << "2)insert in list" << endl
-             << "3)exit" << endl;
-        cout << "enter the choice:" << endl;
-        cin >> choice;
-        switch (choice)
-        {
-        case 1:
-            p.insertmat(pair);
-            break;
-        case 2:
-            p.insertlist(pair);
-            break;
-        case 3:
-            return 0;
-            break;
-        default:
-            cout << "wrong choice" << endl;
-            break;
-        }
-        cout << endl
-             << "want to continue:1)yes" << endl;
-        cin >> choice;
-        if (choice != 1)
-        {
-            return 0;
-        }
+        visit[i] = false;
     }
-    return 0;
+    // input for edges
+    edge(adj, 0, 2);
+    edge(adj, 0, 1);
+    edge(adj, 1, 3);
+    edge(adj, 2, 0);
+    edge(adj, 2, 3);
+    edge(adj, 2, 4);
+    cout << "BFS traversal is"
+         << " ";
+    // call bfs funtion
+    bfs(0, adj, visit); // 1 is a starting point
+    cout << endl;
+    // again initialise all node unvisited for dfs
+    for (int i = 0; i < 5; i++)
+    {
+        visit[i] = false;
+    }
+    cout << "DFS traversal is"
+         << " ";
+    // call dfs function
+    dfs(0, adj, visit); // 1 is a starting point
 }

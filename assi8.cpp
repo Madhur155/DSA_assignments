@@ -44,8 +44,8 @@ void spanning_tree ::create_graph(){
     }while(ch=='y');
 }
 void spanning_tree::display_graph(){
-    for(int i=0;i<V;i++){
-        for(int j=0;j<V;j++)
+    for(int i=1;i<=V;i++){
+        for(int j=1;j<=V;j++)
             cout<<a[i][j]<<" ";
         cout<<endl;
     }

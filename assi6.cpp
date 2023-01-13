@@ -41,6 +41,9 @@ public:
     }
     node *rightrotate(node *y)
     {
+            //     y
+            //    / \
+            //   x   t2
         node *x = y->left;
         node *t2 = x->right;
 
@@ -53,6 +56,9 @@ public:
 
     node *leftrotate(node *x)
     {
+        //         x
+            //    / \
+            //   t2  y
         node *y = x->right;
         node *t2 = y->left;
 
@@ -73,7 +79,10 @@ public:
             node->right = create(node->right, data);
         else // Equal keys not allowed
             return node;
+            
         int bf = getbalancefactor(node);
+
+        //left left case 
         if (bf > 1 && data < node->left->data)
             return rightrotate(node);
 
